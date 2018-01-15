@@ -3,14 +3,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="cp.fr.advancelayoutapp.FragmentB">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:textColor="@color/colorAccent"
-        android:textSize="20dp"
-        android:background="@color/colorPrimaryDark"/>
+        android:orientation="vertical">
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp"
+            android:background="@color/colorPrimaryDark"/>
+
+        <Button
+            android:id="@+id/btFragmentDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Supprimer" />
+
+    </LinearLayout>
+
+
 
 </FrameLayout>
