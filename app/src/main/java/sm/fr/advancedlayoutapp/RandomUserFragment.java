@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,6 +34,7 @@ import sm.fr.advancedlayoutapp.model.User;
 public class RandomUserFragment extends Fragment {
 
     private List<RandowUser> userList;
+    private ListView userListView;
 
 
     public RandomUserFragment() {
@@ -45,7 +48,33 @@ public class RandomUserFragment extends Fragment {
 
         getDataFromHttp();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_random_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_random_user, container, false);
+
+        userListView = view.findViewById(R.id.randowUserListView);
+
+
+        return view;
+    }
+
+    private void processResponse(String response){
+
+        //conversion la liste de RandomUser en un tableau de string comportant uniquement les noms
+
+        userList = responseToList(response);
+        String[] data = new String[userList.size()];
+        for(int i = 0 ; i< userList.size(); i++  ){
+            data[i] = userList.get(i).getName();
+        }
+        //definir un ArrayAdapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this.getActivity(),
+                android.R.layout.simple_list_item_1,
+                data
+        );
+
+        userListView.setAdapter(adapter);
+
+
     }
 
     private void getDataFromHttp(){
@@ -61,6 +90,8 @@ public class RandomUserFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         Log.i("HTTP", response);
+                        processResponse(response);
+
                     }
                 },
                 //Gestionnaire d'erreur
@@ -68,6 +99,7 @@ public class RandomUserFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("HTTP", error.getMessage());
+
                     }
                 }
         );
@@ -89,7 +121,7 @@ public class RandomUserFragment extends Fragment {
                 user.setName(item.getString("name"));
                 user.setEmail(item.getString("email"));
 
-                JSONObject geo = item.getJSONObject("geo");
+                JSONObject geo = item.getJSONObject("address").getJSONObject("geo");
                 user.setLatitude(geo.getDouble("lat"));
                 user.setLongitude(geo.getDouble("lng"));
 
