@@ -3,6 +3,7 @@ package sm.fr.advancedlayoutapp;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -16,9 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -175,7 +179,7 @@ public class DrawerActivity extends AppCompatActivity
         if (requestCode == LOGIN_REQUESTCODE) {
             //récupérer des données
             IdpResponse response = IdpResponse.fromResultIntent(data);
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
 
                 fbuser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -188,9 +192,44 @@ public class DrawerActivity extends AppCompatActivity
 
                 navigationView.getMenu().findItem(R.id.actionLogin).setVisible(false);
 
+                //affichage du lien Logout
+                navigationView.getMenu().findItem(R.id.action_logout).setVisible(true);
+
             } else {
-                Log.d("Main", "Erreur FireAuth code :" + response.getErrorCode());
+                if (response != null) {
+                    Log.d("Main", "Erreur FireAuth code :" + response.getErrorCode());
+                }else {
+                    Toast.makeText(this, "impossible de vous identifier",Toast.LENGTH_LONG);
+                }
             }
         }
+    }
+
+    public void onlogout(MenuItem item) {
+
+        //methode pour un logout
+        AuthUI.getInstance().signOut(this).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //affichage du lien Login
+
+                        navigationView.getMenu().findItem(R.id.actionLogin).setVisible(true);
+
+                        //masquage du lien Logout
+                        navigationView.getMenu().findItem(R.id.action_logout).setVisible(false);
+
+                        //suppression du nom et mail affiché
+                        userNameTextView.setText("");
+                        userEmailTextView.setText("");
+
+                        fbuser = null;
+
+                        //fermet le menu
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                }
+        );
+
     }
 }

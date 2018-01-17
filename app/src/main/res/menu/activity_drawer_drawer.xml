@@ -10,6 +10,12 @@
             android:title="Login"
             android:onClick="onLogin"
             />
+        <item
+            android:id="@+id/action_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout"
+            android:onClick="onlogout"
+            android:visible="false"/>
 
         <item
             android:id="@+id/nav_camera"
