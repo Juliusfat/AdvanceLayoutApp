@@ -1,12 +1,14 @@
 package sm.fr.advancedlayoutapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -31,7 +33,7 @@ import sm.fr.advancedlayoutapp.model.User;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RandomUserFragment extends Fragment {
+public class RandomUserFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private List<RandowUser> userList;
     private ListView userListView;
@@ -51,6 +53,8 @@ public class RandomUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_random_user, container, false);
 
         userListView = view.findViewById(R.id.randowUserListView);
+
+        userListView.setOnItemClickListener(this);
 
 
         return view;
@@ -132,5 +136,22 @@ public class RandomUserFragment extends Fragment {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //selection de l'utilisateur sur lequel on a cliqué
+        RandowUser selectedUser = this.userList.get(position);
+
+        //intention affichage de la carte
+        Intent mapIntention = new Intent(this.getActivity(), Map.class);
+
+        //passage des coordonnées
+        mapIntention.putExtra("Latitude",selectedUser.getLatitude() );
+        mapIntention.putExtra("Longitude",selectedUser.getLongitude() );
+
+        //affichage de l'activité
+        startActivity(mapIntention);
+
     }
 }
