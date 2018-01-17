@@ -5,6 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/actionLogin"
+            android:icon="@drawable/ic_menu_login"
+            android:title="Login"
+            android:onClick="onLogin"
+            />
+
+        <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Page 1"
