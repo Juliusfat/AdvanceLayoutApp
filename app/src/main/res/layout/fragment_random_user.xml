@@ -5,6 +5,7 @@
     tools:context="sm.fr.advancedlayoutapp.RandomUserFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
    <ListView
        android:id="@+id/randowUserListView"
        android:layout_width="match_parent"
